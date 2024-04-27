@@ -36,7 +36,7 @@ class AdminController extends Controller {
 
         if ($request->ajax()) {
             // Return only the partial view with the employee data
-            return view('components.view-emp', ['employees' => $pagination['data']])->render();
+            return view('components.view-emp', ['employees' => $pagination['data'] ])->render();
         }
 
         return view('admin.dashboard.viewEmp', [
