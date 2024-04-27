@@ -11,10 +11,11 @@ class ViewEmp extends Component
     /**
      * Create a new component instance.
      */
-    public $employees;
-    public function __construct($employees)
+    public $employees,$pagination;
+    public function __construct($employees,$pagination)
     {
         $this->employees=$employees;
+        $this->pagination=$pagination;
     }
 
     /**

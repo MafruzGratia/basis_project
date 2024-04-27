@@ -22,7 +22,7 @@
 <div class="container" style="padding-top: 30px;">
     <div class="row">
 
-       <x-view-emp :employees=$employees/>
+       <x-view-emp :employees=$employees :pagination=$pagination/>
 
     </div>
 </div>

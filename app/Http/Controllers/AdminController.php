@@ -11,6 +11,8 @@ use App\Models\employee;
 use App\Models\User;
 use Exception;
 use App\mymodule\AdminMethod;
+use App\mymodule\EmployeeMethod;
+
 
 class AdminController extends Controller {
     public function index(Request $request){
@@ -25,16 +27,24 @@ class AdminController extends Controller {
     }
 
     public function viewEmp(Request $request){
-        $users=Auth::guard('admin')->user()->user_name;
-        $employees = employee::orderBy('id', 'asc')->paginate(10);
+        $users = Auth::guard('admin')->user()->user_name;
+        $page = $request->input('page', 1); // Default to page 1 if no page query param is provided
+        $perPage = 10; // Set the number of items per page
+
+        // Using the custom pagination service
+        $pagination = EmployeeMethod::paginate(employee::class, $page, $perPage);
+
         if ($request->ajax()) {
             // Return only the partial view with the employee data
-            return view('components.view-emp', compact('employees'))->render();
+            return view('components.view-emp', ['employees' => $pagination['data']])->render();
         }
-        return view('admin.dashboard.viewEmp',[
-            'users'=>$users,
-            'employees'=>$employees,
+
+        return view('admin.dashboard.viewEmp', [
+            'users' => $users,
+            'employees' => $pagination['data'],
+            'pagination' => $pagination // Pass the pagination info to the view
         ]);
+
     }
 
     public function addEmp(){
